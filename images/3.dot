@@ -1,0 +1,19 @@
+digraph {
+"s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))" [label="s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@4d49af10" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"ε, VState(V(\"A\"))" [label="ε, VState(V(\"A\"))", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@4d49af10" -> "ε, VState(V(\"A\"))"
+"org.parser.sppf.PackedNode@279ad2e3" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"s eB vA, VState(V(\"A\")), VState(V(\"A\"))" [label="s eB vA, VState(V(\"A\")), VState(V(\"A\"))", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@58134517" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"org.parser.sppf.PackedNode@58134517":sw  -> "s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))"
+"E(\"B\"), VState(V(\"A\")), EState(E(\"B\"))" [label="E(\"B\"), VState(V(\"A\")), EState(E(\"B\"))", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@58134517":s  -> "E(\"B\"), VState(V(\"A\")), EState(E(\"B\"))"
+"V(\"A\"), EState(E(\"B\")), VState(V(\"A\"))" [label="V(\"A\"), EState(E(\"B\")), VState(V(\"A\"))", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@58134517" -> "V(\"A\"), EState(E(\"B\")), VState(V(\"A\"))"
+"s eB vA, VState(V(\"A\")), VState(V(\"A\"))" -> "org.parser.sppf.PackedNode@58134517"
+"org.parser.sppf.PackedNode@279ad2e3" -> "s eB vA, VState(V(\"A\")), VState(V(\"A\"))"
+"s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))" -> "org.parser.sppf.PackedNode@4d49af10"
+"s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))" -> "org.parser.sppf.PackedNode@279ad2e3"
+}
+

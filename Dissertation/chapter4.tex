@@ -1,2 +1,150 @@
-\chapter{Четвертая глава}
+\chapter{Экспериментальное тестирование}
 \label{ch:ch4}
+
+
+Для анализа полученного результата был проведено сравнение времени работы с библиотекой Meerkat. В свою очередь сравнение библиотеки Meerkat c библиотекой Trails приведено в работе \cite{MeerkatGraphs}. Замер производился с помощью фреймворка JMH\footnote{https://github.com/openjdk/jmh (Дата обр. 21.05.2024)}.
+
+Тестирование проводилось на вычислительной машине с 12-ядерным процессором AMD Ryzen 9 7900X и 128 ГБ оперативной памяти DDR5.
+
+Для запуска тестов была добавлена поддержка Neo4j графов, т.к. эту базу данных поддерживает Meerkat. Для этого использовалось предоставляемое Neo4j Java API\footnote{https://neo4j.com/docs/java-reference/4.4/ (дата обр. 21.05.2024)}, с помощью которого был реализован интерфейс графа, с которым работают комбинаторы.
+
+Первый набор тестов был взят такой же, какой использовали авторы расширения Meerkat, в свою очередь он был представлен в работе \cite{RDF_CF}. Это набор онтологий, каждая из которых представлена RDF-файлом. Для тестирования эти файлы были преобразованы в ориентированные графы, каждый из которых был загружен в свою базу данных Neo4j.
+
+\begin{figure}[htp]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        $Q_1 \to subclassof^{-1}\ Q1?\ subclassof$\\
+        $Q_1 \to type^{-1}\ Q1?\ type$\\
+        \caption{Запрос 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        $S \to subclassof^{-1}\ S?\ subclassof$
+        $Q_2 \to S\ subclassof$
+        \caption{Запрос 2}
+    \end{subfigure}
+    \caption{Запросы для тестирования}
+    \label{fig:queries}
+\end{figure}
+
+Используемые запросы приведены на рисунке \ref{fig:queries}. Ключевые слова, например, \texttt{type} или \texttt{subclassof}, являются метками на ребрах. Верхний индекс \texttt{-1} обозначает обратное направление ребра. Знак \texttt{?} обозначает ноль или одно применение парсера.
+
+\begin{lstlisting}[float=h, label=lst:qqueries, caption={Запросы, используя комбинаторы}]
+val subclassof1 = throughInE { it.label == "subClassOf" }
+val subclassof = throughOutE { it.label == "subClassOf" }
+val type1 = throughInE { it.label == "type" }
+val type = throughOutE { it.label == "type" }
+val Q1 = LazyParser<Neo4jVertexState, Neo4jVertexState, Any>()
+Q1.p = (subclassof1 seq (Q1 or eps()) seq subclassof) or
+        (type1 seq (Q1 or eps()) seq type)
+
+val S = LazyParser<Neo4jVertexState, Neo4jVertexState, Any>()
+S.p = (subclassof1 seq (S or eps()) seq subclassof)
+val Q2 = ((S or eps()) seq subclassof)
+\end{lstlisting}
+
+Описание этих запросов, используя комбинаторы, приведено в листинге \ref{lst:qqueries}. Комбинаторы \texttt{throughOutE} и \texttt{throughInE} вспомогательные: они пропускают выходящую или входящую вершину ребра соответственно.
+
+\begin{table}[h]
+    \caption{Информация о RDF графах}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Граф} & \textbf{Кол-во вершин} & \textbf{Кол-во рёбер} \\
+        \hline
+        atom-primitive.owl & 291 & 685 \\
+        biomedical-measure-primitive.owl & 341 & 711 \\
+        foaf.rdf & 256 & 815 \\
+        generations.owl & 129 & 351 \\
+        people\_pets.rdf & 337 & 834 \\
+        pizza.owl & 671 & 2604 \\
+        skos.rdf & 144 & 323 \\
+        travel.owl & 131 & 397 \\
+        univ-bench.owl & 179 & 413 \\
+        wine.rdf & 733 & 2450 \\
+        \hline
+\end{tabular}
+\label{tab:rdfGraphs}
+\end{table}
+
+Характеристики графов-онтологий приведены в таблице \ref{tab:rdfGraphs}. Результаты  замеров приведены в таблице \ref{tab:rdfTimes}. 
+
+\begin{table}[h]
+    \caption{Время выполнения для моего решения и Meerkat}
+    \begin{tabular}{|b{0.36\linewidth}|b{0.13\linewidth}|b{0.12\linewidth}|b{0.13\linewidth}|b{0.12\linewidth}|}
+        \hline
+        \textbf{Граф} & \multicolumn{2}{|c|}{\textbf{Запрос 1 (мс)}} & \multicolumn{2}{|c|}{\textbf{Запрос 2 (мс)}} \\
+        \cline{2-5}
+         & \textbf{Мое решение} & \textbf{Meerkat} & \textbf{Мое решение} & \textbf{Meerkat} \\ 
+        \hline
+        atom-primitive.owl  & 19.498 & 22.013 & 11.378 & 12.593 \\
+        biomedical-mesure-primitive  & 23.537 & 42.514 & 6.464 & 8.435 \\
+        foaf.rdf  & 3.337 & 3.485 & 0.398 & 0.432 \\
+        generations.owl  & 1.273 & 1.432 & 0.167 & 0.166 \\
+        people\_pets.rdf  & 8.334 & 12.692 & 0.581 & 0.676 \\
+        pizza.owl  & 61.411 & 123.946 & 9.605 & 9.595 \\
+        skos.rdf  & 0.709 & 0.724 & 0.179 & 0.185 \\
+        travel.owl  & 2.822 & 4.834 & 0.377 & 0.406 \\
+        univ-bench.owl  & 2.889 & 3.633 & 0.467 & 0.482 \\
+        wine.rdf  & 55.053 & 146.174 & 1.452 & 1.694 \\
+        \hline
+    \end{tabular}
+    \label{tab:rdfTimes}
+\end{table}
+
+Видно, что почти на всех графах мое решение выигрывает по времени выполнения. 
+
+Данные онтологии имеют относительно небольшой объем, поэтому было проведено тестирование на более крупных графах. В качестве таковых были взяты некоторые графы из набора CFPQ\_Data\footnote{https://formallanguageconstrainedpathquerying.github.io/CFPQ\_Data/graphs (дата обр. 21.05.2024)}, у которых количество вершин и ребер на порядки больше, чем было в онтологиях.
+
+\begin{table}[h]
+    \caption{Информация о CFPQ графах и время выполнения}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        
+    \hline
+    \textbf{Граф} & \textbf{Кол-во вершин} & \textbf{Кол-во рёбер} & \multicolumn{2}{|c|}{\textbf{Запрос 1 (с)}} \\
+    \cline{4-5}
+    & & & \textbf{GParsers} & \textbf{Meerkat} \\
+    \hline
+    eclass.csv & 239111 & 360248 & 1.220 & 1.095 \\
+    enzyme.csv & 48815 & 86543 & 0.121 & 0.116 \\
+    geospecies.csv & 450609 & 2201532 & 1.755 & 1.471 \\
+    go.csv & 582929 & 1437437 & 6.231 & 5.367 \\
+    go\_hierarchy.csv & 45007 & 490109 & 12.015 & 8.337 \\
+    \hline
+    \end{tabular}
+    \label{tab:CFPQTimes}
+\end{table}
+
+Характеристики этих графов и время выполнения моего решения и Meerkat можно увидеть в таблице \ref{tab:CFPQTimes}. Видно, что мое решение несколько хуже решения Meerkat, но в целом мы получаем сопоставимое время работы.
+
+Еще один замер был проведен на наборе данных Yago\footnote{https://gitlab.inria.fr/tyrex-public/rlqdag (дата обр. 21.05.2024)}. Данный граф имеет 62,643,951 ребер и 42,832,856 вершин. В качестве запроса был взят первый из предложенного списка, который выглядит так на языке Cypher:
+\begin{Verbatim}
+MATCH (x)-[:P74636308]->()-[:P59561600]->
+    ()-[:P13305537*1..]->()-[:P92580544*1..]->
+    (:Entity{id:'40324616'}) RETURN DISTINCT x
+\end{Verbatim}
+
+В этом запросе используется как метки на ребрах, так и свойство вершины \texttt{id}. 
+
+Написав данный запрос на комбинаторах в том же виде, не удалось выполнить запрос. Алгоритм перебирает все вершины, и на каждой происходит различная мемоизация, из-за чего не хватает памяти вычислительной машины. Было решено переписать этот запрос в обратную сторону, выполнив поиск по обратным ребрам, тогда получится сразу отфильтровать все вершины, которые не имеют свойство \texttt{id} равное \texttt{'40324616'}. 
+
+Полученный в итоге запрос на комбинаторах в моем решении выглядит так:
+\begin{lstlisting}
+(v { it.properties["id"] == "40324616" } seq
+(inE { it.label == "P92580544" } seq inV()).some seq
+(inE { it.label == "P13305537" } seq inV()).some seq
+inE { it.label == "P59561600" } seq inV() seq
+inE { it.label == "P74636308" } seq inV())
+\end{lstlisting}
+
+А запрос, написанных на комбинаторах Meerkat выглядит так:
+\begin{lstlisting}
+syn(V((e: Entity) => e.getProperty("id") == "40324616") ~
+inE((e: Entity) => e.label() == "P92580544").+ ~
+inE((e: Entity) => e.label() == "P13305537").+ ~
+inE((e: Entity) => e.label() == "P59561600") ~
+inE((e: Entity) => e.label() == "P74636308"))
+\end{lstlisting}
+
+В итоге мое решение выдало верный результат, аналогичный запросу на языке Cypher. Время выполнения моего решения составило 5.558 секунд. Решение Meerkat, к сожалению, не укладывается в аппаратные ограничения по памяти. Запрос на языке Cypher отрабатывает за 215 мс, что вполне ожидаемо, т.к. Cypher может использовать внутренние структуры данных neo4j, например индексы. 

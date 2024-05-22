@@ -1,0 +1,5 @@
+digraph {
+    rankdir="LR";
+    x -> y [label=A]
+    y -> y [label=B]
+}

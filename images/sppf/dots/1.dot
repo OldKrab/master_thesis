@@ -1,0 +1,9 @@
+digraph {
+nodesep=0.1;
+ranksep=0.25;
+"s, V(\"x\"), V(\"y\")" [label="S, V(\"x\"), V(\"y\")", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"E(\"A\"), V(\"x\"), E(\"A\")" [label="E(\"A\"), V(\"x\"), E(\"A\")", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"s, V(\"x\"), V(\"y\")" -> "E(\"A\"), V(\"x\"), E(\"A\")"
+"V(\"y\"), E(\"A\"), V(\"y\")" [label="V(\"y\"), E(\"A\"), V(\"y\")", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"s, V(\"x\"), V(\"y\")"  -> "V(\"y\"), E(\"A\"), V(\"y\")"
+}

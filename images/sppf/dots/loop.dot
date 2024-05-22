@@ -1,0 +1,24 @@
+digraph {
+nodesep=0.1;
+ranksep=0.25;
+"S, V(\"x\"), V(\"x\")" [label="S, V(\"x\"), V(\"x\")", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@279ad2e3" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"ε, V(\"x\")" [label="ε, V(\"x\")", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@279ad2e3" -> "ε, V(\"x\")"
+"org.parser.sppf.PackedNode@58134517" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"S a x, V(\"x\"), V(\"x\")" [label="S a x, V(\"x\"), V(\"x\")", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@4450d156" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"S a, V(\"x\"), E(\"A\")" [label="S a, V(\"x\"), E(\"A\")", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@4461c7e3" [label="", shape=box, style="", width=0.2, height=0.2, ordering="out"]
+"org.parser.sppf.PackedNode@4461c7e3" -> "S, V(\"x\"), V(\"x\")"
+"E(\"A\"), V(\"x\"), E(\"A\")" [label="E(\"A\"), V(\"x\"), E(\"A\")", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@4461c7e3" -> "E(\"A\"), V(\"x\"), E(\"A\")"
+"S a, V(\"x\"), E(\"A\")" -> "org.parser.sppf.PackedNode@4461c7e3"
+"org.parser.sppf.PackedNode@4450d156" -> "S a, V(\"x\"), E(\"A\")"
+"V(\"x\"), E(\"A\"), V(\"x\")" [label="V(\"x\"), E(\"A\"), V(\"x\")", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"org.parser.sppf.PackedNode@4450d156" -> "V(\"x\"), E(\"A\"), V(\"x\")"
+"S a x, V(\"x\"), V(\"x\")" -> "org.parser.sppf.PackedNode@4450d156"
+"org.parser.sppf.PackedNode@58134517" -> "S a x, V(\"x\"), V(\"x\")"
+"S, V(\"x\"), V(\"x\")" -> "org.parser.sppf.PackedNode@279ad2e3"
+"S, V(\"x\"), V(\"x\")" -> "org.parser.sppf.PackedNode@58134517"
+}

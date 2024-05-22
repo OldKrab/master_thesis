@@ -1,0 +1,6 @@
+digraph {
+"s eB vA | ε, VState(V(\"A\")), VState(V(\"A\"))" [label="s eB vA | ε, VState(V(\"A\")), VState(V(\"A\"))", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"ε, VState(V(\"A\"))" [label="ε, VState(V(\"A\"))", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"s eB vA | ε, VState(V(\"A\")), VState(V(\"A\"))" -> "ε, VState(V(\"A\"))"
+}
+

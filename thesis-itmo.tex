@@ -35,20 +35,20 @@
 \input{common/renames}
 
 %%% Структура диссертации (ГОСТ Р 7.0.11-2011, 4)
-\include{Dissertation/title}           % Титульный лист
-\setcounter{page}{5}    % оглавление начинается с 5 страницы, остальное генерится из ИСУ
+% \include{Dissertation/title}           % Титульный лист
+\setcounter{page}{4}    % оглавление начинается с 5 страницы, остальное генерится из ИСУ
 \include{Dissertation/contents}        % Оглавление
 
 \ifnumequal{\value{contnumfig}}{1}{}{\counterwithout{figure}{chapter}}
 \ifnumequal{\value{contnumtab}}{1}{}{\counterwithout{table}{chapter}}
 
-\renewcommand{\figurename}{Рисунок}
-\renewcommand{\tablename}{Таблица}
-\include{Dissertation/syn_ru} % реферат на русском
+% \renewcommand{\figurename}{Рисунок}
+% \renewcommand{\tablename}{Таблица}
+% \include{Dissertation/syn_ru} % реферат на русском
 
-\renewcommand{\figurename}{Figure}
-\renewcommand{\tablename}{Table}
-\include{Dissertation/syn_en} % реферат на английском
+% \renewcommand{\figurename}{Figure}
+% \renewcommand{\tablename}{Table}
+% \include{Dissertation/syn_en} % реферат на английском
 
 
 \renewcommand{\figurename}{Рисунок}
@@ -70,10 +70,10 @@
 
 \include{Dissertation/conclusion}      % Заключение
 \include{Dissertation/acronyms}        % Список сокращений и условных обозначений
-\include{Dissertation/dictionary}      % Словарь терминов
-\include{Dissertation/lists}           % Списки таблиц и изображений (иллюстративный материал)
+% \include{Dissertation/dictionary}      % Словарь терминов
+% \include{Dissertation/lists}           % Списки таблиц и изображений (иллюстративный материал)
 \include{Dissertation/references}      % Список литературы
-\include{Dissertation/acknowledgements} % Благодарности
+% \include{Dissertation/acknowledgements} % Благодарности
 
 \setcounter{totalchapter}{\value{chapter}} % Подсчёт количества глав
 

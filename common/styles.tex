@@ -5,7 +5,7 @@
                                 % \DeclareRobustCommand protects \fixme
                                 % from expanding inside \MakeUppercase
 \AtBeginDocument{%
-    \setlength{\parindent}{2.5em}                   % Абзацный отступ. Должен быть одинаковым по всему тексту и равен пяти знакам (ГОСТ Р 7.0.11-2011, 5.3.7).
+    \setlength{\parindent}{1.25cm}                   % Абзацный отступ. Должен быть одинаковым по всему тексту и равен пяти знакам (ГОСТ Р 7.0.11-2011, 5.3.7).
 }
 
 %%% Таблицы %%%
@@ -30,12 +30,16 @@
 \captionsetup[figure]{
         format=plain,                     % формат подписи (plain|hang)
         font=normal,                      % нормальные размер, цвет, стиль шрифта
-        skip=.0pt,                        % отбивка под подписью
+        skip=5.0pt,                        % отбивка под подписью
         parskip=.0pt,                     % отбивка между параграфами подписи
         position=below,                   % положение подписи
         singlelinecheck=true,             % выравнивание по центру, если умещается в одну строку
         justification=centerlast,         % центровка
         labelsep=figsep,                  % разделитель
+}
+
+\captionsetup[subfigure]{
+        skip=5.0pt,                        % отбивка под подписью
 }
 
 %%% Подписи подрисунков %%%
@@ -146,7 +150,7 @@
 
 \hypersetup{
     linktocpage=true,           % ссылки с номера страницы в оглавлении, списке таблиц и списке рисунков
-%    linktoc=all,                % both the section and page part are links
+    linktoc=all,                % both the section and page part are links
 %    pdfpagelabels=false,        % set PDF page labels (true|false)
     plainpages=false,           % Forces page anchors to be named by the Arabic form  of the page number, rather than the formatted form
     colorlinks,                 % ссылки отображаются раскрашенным текстом, а не раскрашенным прямоугольником, вокруг текста
@@ -184,8 +188,8 @@
 %\renewcommand{\labelenumi}{\theenumi)} %первый уровень нумерации
 \renewcommand{\theenumii}{\asbuk{enumii}} %второй уровень нумерации
 \renewcommand{\labelenumii}{\theenumii)} %второй уровень нумерации
-\renewcommand{\theenumiii}{\arabic{enumiii}} %третий уровень нумерации
-\renewcommand{\labelenumiii}{\theenumiii)} %третий уровень нумерации
+% \renewcommand{\theenumiii}{\arabic{enumiii}} %третий уровень нумерации
+% \renewcommand{\labelenumiii}{\theenumiii)} %третий уровень нумерации
 
 \setlist{nosep,%                                    % Единый стиль для всех списков (пакет enumitem), без дополнительных интервалов.
     labelindent=\parindent,leftmargin=*%            % Каждый пункт, подпункт и перечисление записывают с абзацного отступа (ГОСТ 2.105-95, 4.1.8)
@@ -310,7 +314,7 @@
 
 %%% Макет страницы %%%
 % Выставляем значения полей (ГОСТ 7.0.11-2011, 5.3.7)
-\geometry{a4paper, top=2cm, bottom=2cm, left=2.5cm, right=1cm, nofoot, nomarginpar} %, heightrounded, showframe
+\geometry{a4paper, top=2cm, bottom=2cm, left=3cm, right=1.5cm} %, heightrounded, showframe
 \setlength{\topskip}{0pt}   %размер дополнительного верхнего поля
 \setlength{\footskip}{12.3pt} % снимет warning, согласно https://tex.stackexchange.com/a/334346
 
@@ -369,11 +373,11 @@
 
 %%% Колонтитулы %%%
 % Порядковый номер страницы печатают на середине верхнего поля страницы (ГОСТ Р 7.0.11-2011, 5.3.8)
-\makeevenhead{plain}{}{\rmfamily\thepage}{}
-\makeoddhead{plain}{}{\rmfamily\thepage}{}
-\makeevenfoot{plain}{}{}{}
-\makeoddfoot{plain}{}{}{}
+% Но будет на середине нижнего
+\makeevenfoot{plain}{}{\rmfamily\\\thepage}{}
+\makeoddfoot{plain}{}{\rmfamily\\\thepage}{}
 \pagestyle{plain}
+
 
 %%% добавить Стр. над номерами страниц в оглавлении
 %%% http://tex.stackexchange.com/a/306950
@@ -671,18 +675,38 @@
 \setlength{\lmarg}{\widthof{999}}   % ширина надписи 999
 \setlength{\twless}{\textwidth-\lmarg}
 
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+
+\lstdefinelanguage{Kotlin}{
+  comment=[l]{//},
+  commentstyle={\color{gray}\ttfamily},
+  emph={filter, first, firstOrNull, forEach, lazy, map, mapNotNull, println},
+  emphstyle={\color{OrangeRed}},
+  identifierstyle=\color{black},
+  keywords={!in, !is, abstract, actual, annotation, as, as?, break, by, catch, class, companion, const, constructor, continue, crossinline, data, delegate, do, dynamic, else, enum, expect, external, false, field, file, final, finally, for, fun, get, if, import, in, infix, init, inline, inner, interface, internal, is, lateinit, noinline, null, object, open, operator, out, override, package, param, private, property, protected, public, receiveris, reified, return, return@, sealed, set, setparam, super, suspend, tailrec, this, throw, true, try, typealias, typeof, val, var, vararg, when, where, while},
+  keywordstyle={\color{NavyBlue}\bfseries},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[s]{"""*}{*"""},
+  keywords=[2]{@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Sequence, Boolean, Iterable, Long, Runnable, Short, String, Any, Unit, Nothing},
+  ndkeywordstyle={\color{BurntOrange}\bfseries},
+  sensitive=true,
+  stringstyle={\color{ForestGreen}\ttfamily},
+}
+
 \lstset{ %
-	%    language=R,                     %  Язык указать здесь, если во всех листингах преимущественно один язык, в результате часть настроек может пойти только для этого языка
-	numbers=left,                   % where to put the line-numbers
+	language=Kotlin,                     %  Язык указать здесь, если во всех листингах преимущественно один язык, в результате часть настроек может пойти только для этого языка
+	numbers=none,                   % where to put the line-numbers
 	numberstyle=\fontsize{12pt}{14pt}\selectfont\color{Gray},  % the style that is used for the line-numbers
 	firstnumber=1,                  % в этой и следующей строках задаётся поведение нумерации 5, 10, 15...
-	stepnumber=5,                   % the step between two line-numbers. If it's 1, each line will be numbered
-	numbersep=5pt,                  % how far the line-numbers are from the code
+	stepnumber=1,                   % the step between two line-numbers. If it's 1, each line will be numbered
+	numbersep=10pt,                  % how far the line-numbers are from the code
 	backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
 	showspaces=false,               % show spaces adding particular underscores
 	showstringspaces=false,         % underline spaces within strings
 	showtabs=false,                 % show tabs within strings adding particular underscores
-	frame=leftline,                 % adds a frame of different types around the code
+	frame=none,                 % adds a frame of different types around the code
 	rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
 	tabsize=2,                      % sets default tabsize to 2 spaces
 	captionpos=t,                   % sets the caption-position to top
@@ -691,14 +715,17 @@
 	%    title=\lstname,                 % show the filename of files included with \lstinputlisting;
 	% also try caption instead of title
 	basicstyle=\fontsize{12pt}{14pt}\selectfont\ttfamily,% the size of the fonts that are used for the code
-	%    keywordstyle=\color{blue},      % keyword style
+	keywordstyle=\color{blue},      % keyword style
+	keywordstyle=[2]\color{teal},      % keyword style
 	commentstyle=\color{ForestGreen}\emph,% comment style
 	stringstyle=\color{Mahogany},   % string literal style
 	escapeinside={\%*}{*)},         % if you want to add a comment within your code
 	morekeywords={*,...},           % if you want to add more keywords to the set
 	inputencoding=utf8,             % кодировка кода
-	xleftmargin={\lmarg},           % Чтобы весь код и полоска с номерами строк была смещена влево, так чтобы цифры не вылезали за пределы текста слева
+	% xleftmargin={\lmarg},           % Чтобы весь код и полоска с номерами строк была смещена влево, так чтобы цифры не вылезали за пределы текста слева
+	framexleftmargin=2pt
 }
+
 
 %http://tex.stackexchange.com/questions/26872/smaller-frame-with-listings
 % Окружение, чтобы листинг был компактнее обведен рамкой, если она задается, а не на всю ширину текста

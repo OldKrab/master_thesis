@@ -1,0 +1,11 @@
+digraph {
+"s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))" [label="s eB vA | ε, VState(V(\"A\")), VState(V(\"A\"))", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"s eB vA, VState(V(\"A\")), VState(V(\"A\"))" [label="s eB vA, VState(V(\"A\")), VState(V(\"A\"))", shape=box, style=rounded, width=0.75, height=0.5, ordering=""]
+"s eB vA, VState(V(\"A\")), VState(V(\"A\"))":sw -> "s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))":sw
+"E(\"B\"), VState(V(\"A\")), EState(E(\"B\"))" [label="E(\"B\"), VState(V(\"A\")), EState(E(\"B\"))", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"s eB vA, VState(V(\"A\")), VState(V(\"A\"))"-> "E(\"B\"), VState(V(\"A\")), EState(E(\"B\"))"
+"V(\"A\"), EState(E(\"B\")), VState(V(\"A\"))" [label="V(\"A\"), EState(E(\"B\")), VState(V(\"A\"))", shape=box, style="", width=0.75, height=0.5, ordering=""]
+"s eB vA, VState(V(\"A\")), VState(V(\"A\"))" -> "V(\"A\"), EState(E(\"B\")), VState(V(\"A\"))"
+"s eB vA  | eps, VState(V(\"A\")), VState(V(\"A\"))" -> "s eB vA, VState(V(\"A\")), VState(V(\"A\"))"
+}
+
